@@ -66,6 +66,3 @@ env-hackpr/
 
 # Generated Files
 *.*~
-
-# Environment File
-.env
