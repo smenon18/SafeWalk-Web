@@ -31,7 +31,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1', 'safewalk-web.herokuapp.com']
+ALLOWED_HOSTS = ['localhost','127.0.0.1', 'safewalk-web.herokuapp.com', 'safewal-web.com']
 
 
 # Application definition
@@ -130,7 +130,7 @@ USE_TZ = True
 # STATIC FILE CONFIGURATION                                                                                                                     
 # ------------------------------------------------------------------------------                                                                
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root                                                                          
-STATIC_ROOT = str(ROOT_DIR('staticfiles'))
+STATIC_ROOT = ''
 
 # Static files (CSS, JavaScript, Images)                                                                                                        
 # https://docs.djangoproject.com/en/1.9/howto/static-files/                                                                                     
