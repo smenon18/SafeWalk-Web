@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import User, ParentalRel
+from api.models import User, ParentalRel, InTransit
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

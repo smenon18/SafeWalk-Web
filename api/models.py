@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils.timezone import now
 
 from datetime import datetime
 
@@ -30,8 +31,8 @@ class ParentalRel(models.Model):
         return self.parent
 
 class InTransit(models.Model):
-    child = models.ForeignKey(User, on_delet=mopdels.CASCADE)
-    depart_time = models.DateTimeField(default=datetime.now())
+    child = models.ForeignKey(User, on_delete=models.CASCADE)
+    depart_time = models.DateTimeField(default=now)
     expected_arrival_time = models.DateTimeField()
     has_arrived = models.BooleanField(default=False)
 
