@@ -26,9 +26,9 @@ class JSONResponse(HttpResponse):
 
 def check_login(request):
     if not request.body:
-        return HttpResonse(status=400)
+        return HttpResponse(status=400)
     elif request.method == 'GET':
-        data = JSONParser.parse(request)
+        data = JSONParser().parse(request)
         try:
             user = User(username=data['username'], password=data['password'])
         except:
@@ -43,7 +43,7 @@ def notify_parent(request):
     if not request.body:
         return HttpResponse(status=400)
     elif request.method == 'GET':
-        data = JSONParser.parse(request)
+        data = JSONParser().parse(request)
         try:
             user = User(username=data['username'], password=data['password'])
             parents = ParentalRel.objects.all().filter(child=user)
@@ -66,7 +66,7 @@ def create_user(request):
     if not request.body:
         return HttpResponse(status=404)
     elif request.method == 'POST':
-        data = JSONParser.parse(request)
+        data = JSONParser().parse(request)
         try:
             validate_email(data['email'])
         except ValidationError:

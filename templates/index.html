@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Hello World!
+Child Lock
 {% endblock %}
 
 {% block headcss %}
@@ -17,10 +17,26 @@ Hello World!
 {% endblock %}
 
 {% block content %}
-  <ul class="nav nav-tabs">
-    <li class="active"><a href="#">Home</a></li>
-    <li><a href="#">Menu 1</a></li>
-    <li><a href="#">Menu 2</a></li>
-    <li><a href="#">Menu 3</a></li>
-  </ul>
+<nav class="navbar navbar-inverse">
+  <div  class="container">
+    <div class="navbar-header">
+      <ul class="nav navbar-nav">
+        <!-- Brand -->
+        <li>
+          <div class="navbar-brand"><span class="glyphicon glyphicon-lock"></span> Child Lock</div>
+        </li>
+        <!-- Links -->
+        <li class="active">
+          <a href="{% url 'webuser-views-home' %}"><span class="glyphicon glyphicon-home"></span> Home</a>
+        </li>
+        <li>
+          <a href="{% url 'webuser-views-login' %}"><span class="glyphicon glyphicon-user"></span> Login</a>
+        </li>
+        <li>
+          <a href="{% url 'webuser-views-register' %}"><span class="glyphicon glyphicon-ok"></span> Register</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 {% endblock %}

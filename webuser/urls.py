@@ -2,6 +2,7 @@ from django.conf.urls import url
 from webuser import views
 
 urlpatterns = [
-    url(r'^', views.home),
-    url(r'^login', views.login),
+    url(r'^login', views.login, name="webuser-views-login"),
+    url(r'^register', views.register, name="webuser-views-register"),
+    url(r'^', views.home, name="webuser-views-home"),
 ]
