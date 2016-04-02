@@ -10,6 +10,9 @@ from django.core.exceptions import ValidationError
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 
+from api.models import User, ParentalRel
+from api.serializers import UserSerializer, ParentalRelSerializer
+
 from safewalk.settings import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
 
 from datetime import datetime
@@ -44,17 +47,17 @@ def notify_parent(request):
     elif request.method == 'GET':
         data = JSONParser.parse(request)
         try:
-            user = User(username=data['username'], password=data['password']) 
-            users = ParentalRel.objects.raw('SELECT parent FROM api_parentalrel WHERE child=' + user)
+            user = User(username=data['username'], password=data['password'])
+            parents = ParentalRel.objects.all().filter(child=user)
         except:
             return HttpResponse(status=400)
-        if not users:
+        if not parents:
             return HttpReponse(status=400)
         # Figure out if calculations are necessary
-        for u in users:
+        for p in parents:
             htmlMessage = "Hi " + u.get_username() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
             try:
-                send_mail("Your Child is on the move.", "", EMAIL_HOST_USER, u.get_email(), fail_silently=False, html_message=htmlMessage)
+                send_mail("Your Child is on the move.", "", EMAIL_HOST_USER, p.get_parent().get_email(), fail_silently=False, html_message=htmlMessage)
             except:
                 return HttpResponse(status=417) # Expectation Failed
         return HttpResponse(status=202)
