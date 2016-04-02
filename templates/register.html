@@ -10,6 +10,7 @@ Child Lock
 
 {% block headjs %}
 {{ block.super }}
+<script text="text/javascript" src="/static/js/register.js"></script>
 {% endblock %}
 
 {% block head %}
@@ -41,12 +42,15 @@ Child Lock
 </nav>
 
 <div>
-  <form id="loginForm">
+  <form id="registerForm">
+    {% csrf_token %}
     <label for="username">Username: </label>
     <input id="username" type="text" name="username" value="{{ username }}">
-    <label for="pass">Password: </label>
-    <input id="pass" type="password" name="pass" value="{{ pass }}">
-    <input type="submit" value="Login" onclick="submitform()">
+    <label for="password">Password: </label>
+    <input id="password" type="password" name="password" value="{{ password }}">
+    <label for="email">E-Mail: </label>
+    <input id="email" type="email" name="email" value="{{ email }}">
+    <input type="submit" value="Sign Up" onclick="submitform()">
   </form>
 </div>
 {% endblock %}
