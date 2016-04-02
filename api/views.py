@@ -13,8 +13,6 @@ from rest_framework.parsers import JSONParser
 from api.models import User, ParentalRel
 from api.serializers import UserSerializer, ParentalRelSerializer
 
-from safewalk.settings import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
-
 from datetime import datetime
 
 # Create your views here.
@@ -53,11 +51,11 @@ def notify_parent(request):
             return HttpResponse(status=400)
         if not parents:
             return HttpReponse(status=400)
-        # Figure out if calculations are necessary
+        # Figure out what calculations are necessary
         for p in parents:
             htmlMessage = "Hi " + u.get_username() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
             try:
-                send_mail("Your Child is on the move.", "", EMAIL_HOST_USER, p.get_parent().get_email(), fail_silently=False, html_message=htmlMessage)
+                send_mail("Your Child is on the move.", "", settings.EMAIL_HOST_USER, p.get_parent().get_email(), fail_silently=False, html_message=htmlMessage)
             except:
                 return HttpResponse(status=417) # Expectation Failed
         return HttpResponse(status=202)

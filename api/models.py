@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+from datetime import datetime
+
 # Create your models here.
 
 class User(models.Model):
@@ -15,7 +17,6 @@ class User(models.Model):
     def get_username(self):
         return self.username
 
-
 class ParentalRel(models.Model):
     class Meta:
         unique_together = (('child', 'parent'),)
@@ -27,3 +28,21 @@ class ParentalRel(models.Model):
 
     def get_parent(self):
         return self.parent
+
+class InTransit(models.Model):
+    child = models.ForeignKey(User, on_delet=mopdels.CASCADE)
+    depart_time = models.DateTimeField(default=datetime.now())
+    expected_arrival_time = models.DateTimeField()
+    has_arrived = models.BooleanField(default=False)
+
+    def get_child(self):
+        return self.child
+    
+    def get_depart_time(self):
+        return self.depart_time
+
+    def get_expected_arrival_time(self):
+        return self.expected_arrival_time
+
+    def get_has_arrived(self):
+        return self.has_arrived
