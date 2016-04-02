@@ -1,1 +1,1 @@
-web: waitress-serve --port=$PORT safewalk.wsgi:aplication
+web: gunicorn safewalk.wsgi --log-file -
