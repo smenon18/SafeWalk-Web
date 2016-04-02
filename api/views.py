@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.hashers import make_passwords, is_password_usable, check_password
+#from django.contrib.auth.hashers import make_passwords, is_password_usable, check_password
 
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
@@ -21,7 +21,7 @@ class JSONResponse(HttpResponse):
 def check_login(request):
     if not request.body:
         return HttpResonse(status=400)
-    elif request.method = 'GET':
+    elif request.method == 'GET':
         data = JSONParser.parse(request)
         try:
             user = Users(username=data['username'], password=data['password'])
@@ -36,10 +36,10 @@ def check_login(request):
 def notify_parent(request):
     if not request.body:
         return HttpResponse(status=400)
-    elif request.method = 'GET':
+    elif request.method == 'GET':
         data = JSONParser.parse(request)
         try:
-            users = 
+	  print("Okay")
         except:
             return HttpResponse(status=400)
         if not user:
