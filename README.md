@@ -1,3 +1,3 @@
 # SafeWalk-Web
 
-HackPrinceton project
+HackPrinceton 2016 project

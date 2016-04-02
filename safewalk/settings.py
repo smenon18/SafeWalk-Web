@@ -31,7 +31,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
+ALLOWED_HOSTS = ['localhost','127.0.0.1', '52.201.227.192']
 
 
 # Application definition
@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api',
+    'webuser',
+    'rest_framework',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -61,7 +64,7 @@ ROOT_URLCONF = 'safewalk.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ROOT_DIR.Path('templates/'],
+        'DIRS': [ROOT_DIR.path('templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,11 +85,11 @@ WSGI_APPLICATION = 'safewalk.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.psycopg2',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': env('DB_NAME'),
         'HOST': env('DB_HOST'),
         'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
+        'PASSWORD': env('DB_PASS'),
         'PORT': env('DB_PORT'),
     }
 }
@@ -124,8 +127,31 @@ USE_L10N = True
 
 USE_TZ = True
 
+# STATIC FILE CONFIGURATION                                                                                                                     
+# ------------------------------------------------------------------------------                                                                
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root                                                                          
+STATIC_ROOT = str(ROOT_DIR('staticfiles'))
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
+# Static files (CSS, JavaScript, Images)                                                                                                        
+# https://docs.djangoproject.com/en/1.9/howto/static-files/                                                                                     
 
 STATIC_URL = '/static/'
+
+# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS                                              
+STATICFILES_DIRS = (
+    str(ROOT_DIR.path('static')),
+)
+
+# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders                                                       
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
+#Email Settings
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587
+EMAIL_HOST_USER= env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=env('EMAIL_HOST_PASS')
+EMAIL_USE_TLS=True
