@@ -127,14 +127,26 @@ USE_L10N = True
 
 USE_TZ = True
 
+# STATIC FILE CONFIGURATION                                                                                                                     
+# ------------------------------------------------------------------------------                                                                
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root                                                                          
+STATIC_ROOT = str(ROOT_DIR('staticfiles'))
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
+# Static files (CSS, JavaScript, Images)                                                                                                        
+# https://docs.djangoproject.com/en/1.9/howto/static-files/                                                                                     
 
-STATIC_ROOT = ''
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = ( ROOT_DIR.path('static'), )
+# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS                                              
+STATICFILES_DIRS = (
+    str(ROOT_DIR.path('static')),
+)
+
+# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders                                                       
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 
 #Email Settings
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
