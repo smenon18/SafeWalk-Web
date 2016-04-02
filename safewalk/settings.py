@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api',
+    'webuser',
+    'rest_framework',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -61,7 +64,7 @@ ROOT_URLCONF = 'safewalk.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ROOT_DIR.Path('templates/'],
+        'DIRS': [ROOT_DIR.path('templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,11 +85,11 @@ WSGI_APPLICATION = 'safewalk.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.psycopg2',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': env('DB_NAME'),
         'HOST': env('DB_HOST'),
         'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
+        'PASSWORD': env('DB_PASS'),
         'PORT': env('DB_PORT'),
     }
 }

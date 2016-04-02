@@ -6,9 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 
-from api.models import Register, Event
-from api.serializers import RegisterSerializer, EventSerializer
-
 from datetime import datetime
 
 # Create your views here.

@@ -10,5 +10,5 @@ class User(models.Model):
     acctype = models.BooleanField(default=False) # False is child, True is parent
 
 class ParentalRel(models.Model):
-    childUser = models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
-    parentUser = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True)
+    childUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='child')
+    parentUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='parent')
