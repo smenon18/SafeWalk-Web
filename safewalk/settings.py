@@ -155,3 +155,13 @@ EMAIL_PORT=587
 EMAIL_HOST_USER= env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=env('EMAIL_HOST_PASS')
 EMAIL_USE_TLS=True
+
+# MANAGER CONFIGURATION                                                                                                                         
+# ------------------------------------------------------------------------------                                                                
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#admins                                                                               
+ADMINS = (
+    ("""Shaan Menon""", 'menons21@students.rowan.edu'),
+)
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#managers                                                                             
+MANAGERS = ADMINS
