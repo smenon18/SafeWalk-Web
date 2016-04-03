@@ -157,6 +157,7 @@ def list_users(request):
 @csrf_exempt
 def get_transits(request):
     if not request.body:
+        return HttpResponse(status=400)
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
         try:
@@ -171,5 +172,4 @@ def get_transits(request):
             serializer.save()
             return HttpResponse(status=202)
         return HttpResponse(400)
-    else:
-        HttpResponse(status=404
+    HttpResponse(status=404)
