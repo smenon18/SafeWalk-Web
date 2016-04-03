@@ -25,7 +25,7 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
-
+@csrf_exempt
 def check_login(request):
     if not request.body:
         return HttpResponse('{"error": "Empty request data"}', status=400, content_type="application/json")
@@ -41,6 +41,7 @@ def check_login(request):
     else:
         return HttpResponse('{"error": "Invalid methods"}', status=404, content_type="applicaiton/json")
 
+@csrf_exempt
 def notify_parent(request):
     if not request.body:
         return HttpResponse(status=400)
@@ -141,6 +142,7 @@ def confirm_relation(request):
     else:
         return HttpResponse(status=404)
 
+@csrf_exempt
 def list_users(request):
     if request.method == 'GET':
         users = User.Objects.all()
