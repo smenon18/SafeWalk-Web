@@ -8,5 +8,8 @@ urlpatterns = [
     url(r'^notify_parent/', views.notify_parent),
     url(r'^create_user/', views.create_user),
     url(r'^list_users/', views.list_users),
+    url(r'^request_parent/', views.request_parent),
+    url(r'^confirm_relation/', views.confirm_relation),
+    url(r'^get_transits/', views.get_transits),
 ]
 
