@@ -81,3 +81,22 @@ def create_user(request):
             return HttpResponse(status=202)
     else:
         return HttpResponse(status=404)
+
+def request_parent(request):
+    if not body:
+        return HttpResponse(status=404)
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        try:
+            requesting_user = User.objects.get(data['requesting_email'])
+            requested_user = User.objects.get(email=data['requested_email'])
+            htmlMessage = "Hi " + requested_user.get_username() + ",<br><br> " + requesting_user.get_username() + "is requesting to conect with you.<br><br> Thank You, SafeWalk"
+            send_mail("Request", "", settings.EMAIL_HOST_USER, requested_user.get_email(), fail_silently=False,html_message=htmlMessage)
+        except:
+            return HttpResponse(status=400)
+        return HttpResponse(status=202)
+    else:
+        return HttpResponse(status=400)
+
+def confirm_relation(request):
+    return render(request, "confirm.html", {})
