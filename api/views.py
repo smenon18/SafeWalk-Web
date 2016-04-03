@@ -29,7 +29,7 @@ class JSONResponse(HttpResponse):
 def check_login(request):
     if not request.body:
         return HttpResponse('{"error": "Empty request data"}', status=400, content_type="application/json")
-    elif request.method == 'GET':
+    elif request.method == 'PUT':
         data = JSONParser().parse(request)
         try:
             user = User.objects.filter(password=data['password'], email=data['email'])
