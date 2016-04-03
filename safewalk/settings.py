@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'api',
     'webuser',
     'rest_framework',
+    'whitenoise',
 ]
 
 MIDDLEWARE_CLASSES = [
