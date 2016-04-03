@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 import environ
 import mimetypes
-mimetypes.add_type('text/css', '.css', True)
 
 env = environ.Env()
 env.read_env()
@@ -31,9 +30,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1', 'safewalk-web.herokuapp.com', 'safewal-web.com']
+ALLOWED_HOSTS = ['localhost','127.0.0.1', 'safewalk-web.herokuapp.com', 'safewalk-web.com']
 
 # Application definition
 
@@ -47,7 +46,6 @@ INSTALLED_APPS = [
     'api',
     'webuser',
     'rest_framework',
-    'whitenoise',
 ]
 
 MIDDLEWARE_CLASSES = [
