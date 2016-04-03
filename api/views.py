@@ -151,7 +151,7 @@ def confirm_relation(request):
 
 @csrf_exempt
 def list_users(request):
-    if request.method == 'PUT':
+    if request.method == 'GET':
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return JSONResponse(serializer.data)
