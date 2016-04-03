@@ -44,16 +44,16 @@ def check_login(request):
 @csrf_exempt
 def notify_parent(request):
     if not request.body:
-        return HttpResponse(status=401)
+        return HttpResponse(status=400)
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
         try:
             user = User.objects.all().filter(email=data['email'])
             parents = ParentalRel.objects.all().filter(child=user)
         except:
-            return HttpResponse(status=402)
+            return HttpResponse(status=400)
         if not parents:
-            return HttpReponse(status=403)
+            return HttpReponse(status=400)
         transit = InTransit()
         data['child'] = user
         del(data['email'])
@@ -64,7 +64,7 @@ def notify_parent(request):
         for p in parents:
             htmlMessage = "Hi " + p.parent.get_email() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
             try:
-                send_mail("Your Child is on the move.", "", settings.EMAIL_HOST_USER, p.parent.get_parent().get_email(), fail_silently=False, html_message=htmlMessage)
+                send_mail("Your Child is on the move.", "", settings.EMAIL_HOST_USER, p.get_parent().get_email(), fail_silently=False, html_message=htmlMessage)
             except:
                 return HttpResponse(status=417) # Expectation Failed
         return HttpResponse(status=202)
