@@ -1,4 +1,21 @@
 {% extends "base.html" %}
 {% block head %}
+{% endblock %}
+
+{% block headcss %}
 {{ block.super }}
+{% endblock %}
+
+{% block headjs %}
+{{ block.super }}
+<script type="application/javascript" src="{% static '/js/confirm.js' %}"></sript>
+{% endblock %}
+
+{% block content %}
+<div class="main">
+  <div class="well-lg">
+    <h1>To confirm the parental request, please press the confirmation button below, otherwise press cancel.</h1>
+    <button type="submit" name="Confirm" value="Confirm" onclick="confirmation()">
+  </div>
+</div>
 {% endblock %}

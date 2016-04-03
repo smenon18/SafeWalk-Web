@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Child Lock
+Safewalk
 {% endblock %}
 
 {% block headcss %}
@@ -23,7 +23,7 @@ Child Lock
       <ul class="nav navbar-nav">
         <!-- Brand -->
         <li>
-          <div class="navbar-brand"><span class="glyphicon glyphicon-lock"></span> Child Lock</div>
+          <div class="navbar-brand"><span class="glyphicon glyphicon-lock"></span> Safewalk</div>
         </li>
         <!-- Links -->
         <li>
@@ -41,9 +41,9 @@ Child Lock
 </nav>
 
 <div>
-  <form id="loginForm">
-    <label for="username">Username: </label>
-    <input id="username" type="text" name="username" value="{{ username }}">
+  <form role="form" id="loginForm">
+    <label for="email">E-Mail: </label>
+    <input id="email" type="text" name="email" value="{{ email }}">
     <label for="pass">Password: </label>
     <input id="pass" type="password" name="pass" value="{{ pass }}">
     <input type="submit" value="Login" onclick="submitform()">
