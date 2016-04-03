@@ -55,10 +55,12 @@ def notify_parent(request):
             return HttpResponse(status=400)
         if (not parents) or transits:
             return HttpReponse(status=400)
-        serializer = InTransitSerializer(child, data=data)
+        transit = InTransit()
+        data['child'] = user
+        del(data['email'])
+        serializer = InTransitSerializer(transit, data=data)
         if serializer.is_valid():
             serializer.save()
-            return 
         # Figure out what calculations are necessary
         for p in parents:
             htmlMessage = "Hi " + p.parent.get_email() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
