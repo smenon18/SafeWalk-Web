@@ -28,18 +28,18 @@ class JSONResponse(HttpResponse):
 
 def check_login(request):
     if not request.body:
-        return HttpResponse(status=400)
+        return HttpResponse('{"error": "Empty request data"}', status=400, content_type="application/json")
     elif request.method == 'GET':
         data = JSONParser().parse(request)
         try:
             user = User.objects.filter(password=data['password'], email=data['email'])
         except:
-            return HttpResponse(status=400)
+            return HttpResponse('{"error": "Invalid request data"}', status=400, content_type="application/json")
         if not user:
-            return HttpResponse(status=400)
+            return HttpResponse('{"error": "No user exists"}', status=400, content_type="application/json")
         return HttpResponse(status=202)
     else:
-        return HttpResponse(status=404)
+        return HttpResponse('{"error": "Invalid methods"}', status=404, content_type="applicaiton/json")
 
 def notify_parent(request):
     if not request.body:
@@ -47,7 +47,7 @@ def notify_parent(request):
     elif request.method == 'GET':
         data = JSONParser().parse(request)
         try:
-            user = User(username=data['username'], password=data['password'])
+            user = User(email=data['email'], password=data['password'])
             parents = ParentalRel.objects.all().filter(child=user)
         except:
             return HttpResponse(status=400)
@@ -55,7 +55,7 @@ def notify_parent(request):
             return HttpReponse(status=400)
         # Figure out what calculations are necessary
         for p in parents:
-            htmlMessage = "Hi " + p.get_username() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
+            htmlMessage = "Hi " + p.get_email() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
             try:
                 send_mail("Your Child is on the move.", "", settings.EMAIL_HOST_USER, p.get_parent().get_email(), fail_silently=False, html_message=htmlMessage)
             except:
@@ -96,7 +96,7 @@ def create_user(request):
 
 @csrf_exempt
 def request_parent(request):
-    if not body:
+    if not request.body:
         return HttpResponse(status=404)
     elif request.method == 'POST':
         data = JSONParser().parse(request)
@@ -113,7 +113,33 @@ def request_parent(request):
 
 @csrf_exempt
 def confirm_relation(request):
-    return render(request, "confirm.html", {})
+    if not request.body:
+        return HttpResponse(status=404)
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        try:
+            parent = User(email=data['parent'])
+            child = User(email=data['child'])
+        except:
+            return HttpResponse(status=400)
+        relations = ParentalRel.objets.all();
+	if not relations:
+            serializer = ParentalRelSerializer(child, parent)
+            if serializer.is_valid():
+                serializer.save()
+                return HttpResponse(status =202) #First User
+            return HttpResponse(status=400)
+        else:
+            for r in relations:
+                if data['parent'] == r.parent.get_email() and data['child'] == r.parent.get_email():
+                    return HttpResponse(status=400)
+            serializer = ParentalRelSerializer(child, parent)
+            if serializer.is_valid():
+                serializer.save()
+                return HttpResponse(status=202)
+            return HttpResponse(status=400)
+    else:
+        return HttpResponse(status=404)
 
 def list_users(request):
     if request.method == 'GET':
