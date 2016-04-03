@@ -64,7 +64,7 @@ def notify_parent(request):
         for p in parents:
             htmlMessage = "Hi " + p.get_parent().get_email() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
             try:
-                send_mail("Your Child is on the move.", "", settings.EMAIL_HOST_USER, "smenon18@gmail.com", fail_silently=False, html_message=htmlMessage)
+                send_mail("Your Child is on the move.", "", "smenon18@gmail.com",["smenon18@gmail.com"], fail_silently=False, html_message=htmlMessage)
             except:
                 return HttpResponse(status=417) # Expectation Failed
         return HttpResponse(status=202)
