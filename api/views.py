@@ -62,10 +62,9 @@ def notify_parent(request):
             serializer.save()
         # Figure out what calculations are necessary
         for p in parents:
-            par = User.objects.filter(id=p.parent_id)
-            htmlMessage = "Hi " + par.get_email() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
+            htmlMessage = "Hi " + p.get_parent().get_email() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
             try:
-                send_mail("Your Child is on the move.", "", settings.EMAIL_HOST_USER, par.get_email(), fail_silently=False, html_message=htmlMessage)
+                send_mail("Your Child is on the move.", "", settings.EMAIL_HOST_USER, p.get_parent().get_email(), fail_silently=False, html_message=htmlMessage)
             except:
                 return HttpResponse(status=417) # Expectation Failed
         return HttpResponse(status=202)
