@@ -14,9 +14,6 @@ class User(models.Model):
     def get_email(self):
         return self.email
 
-    def get_username(self):
-        return self.username
-
 class ParentalRel(models.Model):
     class Meta:
         unique_together = (('child', 'parent'),)

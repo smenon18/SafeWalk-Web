@@ -103,7 +103,7 @@ def request_parent(request):
         try:
             requesting_user = User.objects.get(data['requesting_email'])
             requested_user = User.objects.get(email=data['requested_email'])
-            htmlMessage = "Hi " + requested_user.get_username() + ",<br><br> " + requesting_user.get_username() + "is requesting to conect with you.<br><br> Thank You, SafeWalk"
+            htmlMessage = "Hi " + requested_user.get_email() + ",<br><br> " + requesting_user.get_email() + "is requesting to connect with you.<br>To confirm this connection <a href='safewalk-web.herokuapp.com/confirm?parent=" + requesting_user.get_email() + "&child=" + requested_user.get_email() + ">please click here.</a>'<br><br> Thank You, SafeWalk"
             send_mail("Request", "", settings.EMAIL_HOST_USER, requested_user.get_email(), fail_silently=False,html_message=htmlMessage)
         except:
             return HttpResponse(status=400)
