@@ -7,11 +7,13 @@ from django.core.mail import send_mail
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
+from django.views.decorators.csrf import csrf_exempt
+
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 
-from api.models import User, ParentalRel
-from api.serializers import UserSerializer, ParentalRelSerializer
+from api.models import User, ParentalRel, InTransit
+from api.serializers import UserSerializer, ParentalRelSerializer, InTransitSerializer
 
 from datetime import datetime
 
@@ -62,6 +64,7 @@ def notify_parent(request):
     else:
         return HttpResponse(status=404)
 
+@csrf_exempt
 def create_user(request):
     if not request.body:
         return HttpResponse(status=404)
@@ -91,6 +94,7 @@ def create_user(request):
     else:
         return HttpResponse(status=404)
 
+@csrf_exempt
 def request_parent(request):
     if not body:
         return HttpResponse(status=404)
@@ -107,6 +111,7 @@ def request_parent(request):
     else:
         return HttpResponse(status=400)
 
+@csrf_exempt
 def confirm_relation(request):
     return render(request, "confirm.html", {})
 

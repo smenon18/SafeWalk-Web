@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Child Lock
+Safewalk
 {% endblock %}
 
 {% block headcss %}
@@ -24,16 +24,16 @@ Child Lock
       <ul class="nav navbar-nav">
         <!-- Brand -->
         <li>
-          <div class="navbar-brand"><span class="glyphicon glyphicon-lock"></span> Child Lock</div>
+          <div class="navbar-brand"><span class="glyphicon glyphicon-lock"></span> Safewalk</div>
         </li>
         <!-- Links -->
         <li>
           <a href="{% url 'webuser-views-home' %}"><span class="glyphicon glyphicon-home"></span> Home</a>
         </li>
-        <li class="active">
+        <li>
           <a href="{% url 'webuser-views-login' %}"><span class="glyphicon glyphicon-user"></span> Login</a>
         </li>
-        <li>
+        <li class="active">
           <a href="{% url 'webuser-views-register' %}"><span class="glyphicon glyphicon-ok"></span> Register</a>
         </li>
       </ul>
@@ -44,12 +44,10 @@ Child Lock
 <div>
   <form id="registerForm">
     {% csrf_token %}
-    <label for="username">Username: </label>
-    <input id="username" type="text" name="username" value="{{ username }}">
+    <label for="email">E-Mail: </label>
+    <input id="email" type="text" name="email" value="{{ email }}">
     <label for="password">Password: </label>
     <input id="password" type="password" name="password" value="{{ password }}">
-    <label for="email">E-Mail: </label>
-    <input id="email" type="email" name="email" value="{{ email }}">
     <input type="submit" value="Sign Up" onclick="submitform()">
   </form>
 </div>
