@@ -45,10 +45,10 @@ def check_login(request):
 def notify_parent(request):
     if not request.body:
         return HttpResponse(status=400)
-    elif request.method == 'GET':
+    elif request.method == 'PUT':
         data = JSONParser().parse(request)
         try:
-            user = User(email=data['email'], password=data['password'])
+            user = User.objects.all().filter(email=data['email'])
             parents = ParentalRel.objects.all().filter(child=user)
         except:
             return HttpResponse(status=400)
@@ -56,9 +56,9 @@ def notify_parent(request):
             return HttpReponse(status=400)
         # Figure out what calculations are necessary
         for p in parents:
-            htmlMessage = "Hi " + p.get_email() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
+            htmlMessage = "Hi " + p.parent.get_email() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
             try:
-                send_mail("Your Child is on the move.", "", settings.EMAIL_HOST_USER, p.get_parent().get_email(), fail_silently=False, html_message=htmlMessage)
+                send_mail("Your Child is on the move.", "", settings.EMAIL_HOST_USER, p.parent.get_parent().get_email(), fail_silently=False, html_message=htmlMessage)
             except:
                 return HttpResponse(status=417) # Expectation Failed
         return HttpResponse(status=202)
@@ -123,7 +123,7 @@ def confirm_relation(request):
             child = User(email=data['child'])
         except:
             return HttpResponse(status=400)
-        relations = ParentalRel.objets.all();
+        relations = ParentalRel.objects.all();
 	if not relations:
             serializer = ParentalRelSerializer(child, parent)
             if serializer.is_valid():
@@ -132,7 +132,7 @@ def confirm_relation(request):
             return HttpResponse(status=400)
         else:
             for r in relations:
-                if data['parent'] == r.parent.get_email() and data['child'] == r.parent.get_email():
+                if data['parent'] == r.parent.get_email() and data['child'] == r.child.get_email():
                     return HttpResponse(status=400)
             serializer = ParentalRelSerializer(child, parent)
             if serializer.is_valid():
@@ -144,8 +144,42 @@ def confirm_relation(request):
 
 @csrf_exempt
 def list_users(request):
-    if request.method == 'GET':
+    if request.method == 'PUT':
         users = User.Objects.all()
         serializer = UserSerializer(users, many=True)
         return JSONResponse(serializer.data)
-    
+
+@csrf_exempt
+def check_arrival(request):
+    if not request.body:
+        return HttpResponse(status=404)
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        try:
+            child = User(email=data['child'])
+        except:
+            return HttpResponse(status=400)
+
+        relations = ParentalRel.objects.all()
+        if not relations:
+            return HttpResponse(status=404)
+
+        valid = False
+        for r in relations:
+            if data['child'] == r.child.get_email():
+                valid = True
+                break
+        if not valid:
+            return HttpResponse(status=400)
+
+        transits = InTransit.objects.all()
+        if not transit:
+            return HttpResponse(status=404)
+        for t in transits:
+            if data['child'] == r.child.get_email():
+                return HttpResponse(status=400)
+        serializer = InTransitSerializer(child, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return HttpResponse(status=202)
+    return HttpResponse(status=404)
