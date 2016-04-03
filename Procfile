@@ -1,1 +1,1 @@
-web: gunicorn safewalk.wsgi --log-file -
+web: gunicorn safewalk.wsgi --insecure --log-file -
