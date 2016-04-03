@@ -50,10 +50,15 @@ def notify_parent(request):
         try:
             user = User.objects.all().filter(email=data['email'])
             parents = ParentalRel.objects.all().filter(child=user)
+            transits = InTransit.objects.all().filter(child=user)
         except:
             return HttpResponse(status=400)
-        if not parents:
+        if (not parents) or transits:
             return HttpReponse(status=400)
+        serializer = InTransitSerializer(child, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return 
         # Figure out what calculations are necessary
         for p in parents:
             htmlMessage = "Hi " + p.parent.get_email() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
@@ -145,41 +150,26 @@ def confirm_relation(request):
 @csrf_exempt
 def list_users(request):
     if request.method == 'PUT':
-        users = User.Objects.all()
+        users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return JSONResponse(serializer.data)
 
 @csrf_exempt
-def check_arrival(request):
+def get_transits(request):
     if not request.body:
-        return HttpResponse(status=404)
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
         try:
-            child = User(email=data['child'])
+            child = User.objects.all().filter(email=data['child'])
+            transit = InTransit.objects.all().filter(child=child)
         except:
-            return HttpResponse(status=400)
-
-        relations = ParentalRel.objects.all()
-        if not relations:
-            return HttpResponse(status=404)
-
-        valid = False
-        for r in relations:
-            if data['child'] == r.child.get_email():
-                valid = True
-                break
-        if not valid:
-            return HttpResponse(status=400)
-
-        transits = InTransit.objects.all()
-        if not transit:
-            return HttpResponse(status=404)
-        for t in transits:
-            if data['child'] == r.child.get_email():
-                return HttpResponse(status=400)
+            HttpResponse(status=400)
+        if not child or not transit:
+            HttpResponse(status=400)
         serializer = InTransitSerializer(child, data=data)
         if serializer.is_valid():
             serializer.save()
             return HttpResponse(status=202)
-    return HttpResponse(status=404)
+        return HttpResponse(400)
+    else:
+        HttpResponse(status=404
