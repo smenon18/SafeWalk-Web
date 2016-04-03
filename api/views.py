@@ -44,16 +44,16 @@ def check_login(request):
 @csrf_exempt
 def notify_parent(request):
     if not request.body:
-        return HttpResponse(status=400)
+        return HttpResponse(status=401)
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
         try:
             user = User.objects.all().filter(email=data['email'])
             parents = ParentalRel.objects.all().filter(child=user)
         except:
-            return HttpResponse(status=400)
+            return HttpResponse(status=402)
         if not parents:
-            return HttpReponse(status=400)
+            return HttpReponse(status=403)
         transit = InTransit()
         data['child'] = user
         del(data['email'])
