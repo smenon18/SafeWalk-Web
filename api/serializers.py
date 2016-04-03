@@ -4,7 +4,7 @@ from api.models import User, ParentalRel, InTransit
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id','username', 'password', 'email')
+        fields = ('id', 'password', 'email')
 
 class ParentalRelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,4 +14,4 @@ class ParentalRelSerializer(serializers.ModelSerializer):
 class InTransitSerializer(serializers.ModelSerializer):
     class Meta:
         model = InTransit
-        fields = ('id','child','depart_time','expected_arrival_time','has_arrived')
+        fields = ('id','child','depart_time','expected_arrival_time','has_arrived','est_distance','start_pos', 'end_pos')

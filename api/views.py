@@ -30,7 +30,7 @@ def check_login(request):
     elif request.method == 'GET':
         data = JSONParser().parse(request)
         try:
-            user = User(username=data['username'], password=data['password'])
+            user = User.objects.filter(password=data['password'], email=data['email'])
         except:
             return HttpResponse(status=400)
         if not user:
@@ -53,7 +53,7 @@ def notify_parent(request):
             return HttpReponse(status=400)
         # Figure out what calculations are necessary
         for p in parents:
-            htmlMessage = "Hi " + u.get_username() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
+            htmlMessage = "Hi " + p.get_username() + ",<br><br> " + "Your Child is on the move.<br><br> Thank You, SafeWalk"
             try:
                 send_mail("Your Child is on the move.", "", settings.EMAIL_HOST_USER, p.get_parent().get_email(), fail_silently=False, html_message=htmlMessage)
             except:
@@ -68,17 +68,26 @@ def create_user(request):
     elif request.method == 'POST':
         data = JSONParser().parse(request)
         try:
+            user = User()
             validate_email(data['email'])
         except ValidationError:
             return HttpResponse(status=400)
         users = User.objects.all()
         if not users:
-            return HttpResponse(status =202) #First User
+            serializer = UserSerializer(user,data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return HttpResponse(status =202) #First User
+            return HttpResponse(status=400)
         else:
             for u in users:
-                if data['email'] == u.get_email() or data['username'] == u.get_username():
+                if data['email'] == u.get_email():
                     return HttpResponse(status=400)
-            return HttpResponse(status=202)
+            serializer = UserSerializer(user, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return HttpResponse(status=202)
+            return HttpResponse(status=400)
     else:
         return HttpResponse(status=404)
 
@@ -100,3 +109,10 @@ def request_parent(request):
 
 def confirm_relation(request):
     return render(request, "confirm.html", {})
+
+def list_users(request):
+    if request.method == 'GET':
+        users = User.Objects.all()
+        serializer = UserSerializer(users, many=True)
+        return JSONResponse(serializer.data)
+    
