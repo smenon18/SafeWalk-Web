@@ -8,7 +8,6 @@ from datetime import datetime
 # Create your models here.
 
 class User(models.Model):
-    username = models.CharField(max_length=32, unique=True, null=False, blank=False)
     password = models.CharField(max_length=32, null=False, blank=False)
     email = models.CharField(max_length=64, null=False, blank=False, unique=True)
 
@@ -35,6 +34,9 @@ class InTransit(models.Model):
     depart_time = models.DateTimeField(default=now)
     expected_arrival_time = models.DateTimeField()
     has_arrived = models.BooleanField(default=False)
+    est_distance= models.PositiveIntegerField(default=0)
+    start_pos= models.CharField(max_length=255, default=0)
+    end_poss= models.CharField(max_length=255, default=0)
 
     def get_child(self):
         return self.child
