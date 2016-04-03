@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import environ
+import mimetypes
+mimetypes.add_type('text/css', '.css', True)
 
 env = environ.Env()
 env.read_env()
@@ -29,10 +31,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool("DEBUG", default=False)
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1', 'safewalk-web.herokuapp.com', 'safewal-web.com']
-
 
 # Application definition
 
@@ -127,22 +128,20 @@ USE_L10N = True
 
 USE_TZ = True
 
-# STATIC FILE CONFIGURATION                                                                                                                     
-# ------------------------------------------------------------------------------                                                                
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root                                                                          
-STATIC_ROOT = ''
+# STATIC FILE CONFIGURATION
+# ------------------------------------------------------------------------------
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
+STATIC_ROOT = str(ROOT_DIR('staticfiles'))
 
-# Static files (CSS, JavaScript, Images)                                                                                                        
-# https://docs.djangoproject.com/en/1.9/howto/static-files/                                                                                     
-
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
 
-# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS                                              
+# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = (
     str(ROOT_DIR.path('static')),
 )
 
-# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders                                                       
+# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -156,12 +155,14 @@ EMAIL_HOST_USER= env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=env('EMAIL_HOST_PASS')
 EMAIL_USE_TLS=True
 
-# MANAGER CONFIGURATION                                                                                                                         
-# ------------------------------------------------------------------------------                                                                
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#admins                                                                               
+# MANAGER CONFIGURATION
+# ------------------------------------------------------------------------------
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = (
     ("""Shaan Menon""", 'menons21@students.rowan.edu'),
 )
 
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#managers                                                                             
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
+
+print mimetypes.guess_type('/static/css/bootstrap.css')
