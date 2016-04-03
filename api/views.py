@@ -50,10 +50,9 @@ def notify_parent(request):
         try:
             user = User.objects.all().filter(email=data['email'])
             parents = ParentalRel.objects.all().filter(child=user)
-            transits = InTransit.objects.all().filter(child=user)
         except:
             return HttpResponse(status=400)
-        if (not parents) or transits:
+        if not parents:
             return HttpReponse(status=400)
         transit = InTransit()
         data['child'] = user
