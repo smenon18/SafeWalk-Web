@@ -36,7 +36,7 @@ class InTransit(models.Model):
     has_arrived = models.BooleanField(default=False)
     est_distance= models.PositiveIntegerField(default=0)
     start_pos= models.CharField(max_length=255, default=0)
-    end_poss= models.CharField(max_length=255, default=0)
+    end_pos= models.CharField(max_length=255, default=0)
 
     def get_child(self):
         return self.child
